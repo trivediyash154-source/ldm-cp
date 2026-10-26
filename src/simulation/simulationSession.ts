@@ -27,14 +27,12 @@ export class SimulationSession {
     private readonly random: () => number = Math.random,
   ) {}
 
-  getControls(): SimulationControls {
-    return this.controls;
-  }
+  readonly getControls = (): SimulationControls => this.controls;
 
-  subscribe(listener: () => void): () => void {
+  readonly subscribe = (listener: () => void): (() => void) => {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
-  }
+  };
 
   private update(patch: Partial<SimulationControls>): void {
     this.controls = { ...this.controls, ...patch };

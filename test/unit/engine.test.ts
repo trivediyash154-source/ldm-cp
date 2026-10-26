@@ -78,6 +78,17 @@ describe('firmware v1 (telemetry only)', () => {
     expect(b.vehicleEvents()).toHaveLength(0);
   });
 
+  it('does not treat a browser stall (pause, then a burst of lines) as a gate sequence', () => {
+    const b = new Bench().connect().frames(1, 5);
+    // The page was busy for 2 s; buffered lines are delivered together.
+    b.now += 2000;
+    for (const raw of [1, 1, 2, 2, 2]) b.dispatch({ type: 'line', text: telemetry(raw), at: b.now });
+    b.frames(2, 3);
+    expect(b.vehicleEvents()).toHaveLength(0);
+    expect(b.state.totals.hostStalls).toBe(1);
+    expect(selectOccupancy(b.state).occupancy).toBe(2);
+  });
+
   it('does not treat pauses while the page was hidden as gate evidence', () => {
     const b = new Bench().connect().frames(1, 5);
     b.dispatch({ type: 'visibility', hidden: true, at: b.now + 10 });
@@ -106,6 +117,15 @@ describe('capacity validation', () => {
     expect(b.vehicleEvents()).toHaveLength(0);
     expect(b.events.some((e) => e.title === 'Counter back in range: 6 → 3')).toBe(true);
     expect(selectOccupancy(b.state).occupancy).toBe(3);
+    // The out-of-range alert clears itself; the timeline keeps the record.
+    expect(selectCounterHealth(b.state)).toBe('ok');
+    expect(b.events.some((e) => e.title === 'Counter out of range: 7')).toBe(true);
+  });
+
+  it('keeps an event discrepancy after the counter recovers', () => {
+    const b = new Bench().connect().frames(3, 3).v2GateSequence('exit', 3, 3).frames(3, 40);
+    b.v2GateSequence('entry', 3, 4);
+    expect(selectCounterHealth(b.state)).toBe('discrepancy');
   });
 
   it('never accepts a step from 5 to 6 as an entry', () => {

@@ -1,0 +1,84 @@
+:root {
+  /* Deep navy — structure and the facility "night" scene */
+  --navy-950: #050f22;
+  --navy-900: #0a1a33;
+  --navy-850: #0e2241;
+  --navy-800: #13294d;
+  --navy-700: #1d3964;
+  --navy-600: #2c4d7f;
+  --navy-300: #9fb2cf;
+
+  /* Ivory analytical surfaces */
+  --ivory-0: #fffdf8;
+  --ivory-50: #fbf8f1;
+  --ivory-100: #f5f0e5;
+  --ivory-200: #ece5d5;
+  --ivory-300: #ddd3bd;
+
+  /* Ink */
+  --ink-900: #0f1b2d;
+  --ink-700: #33425a;
+  --ink-500: #5b6880;
+  --ink-400: #7d889a;
+
+  /* Accents */
+  --teal-800: #0a5654;
+  --teal-700: #0b6d69;
+  --teal-600: #0d8781;
+  --teal-500: #12a59c;
+  --turquoise-400: #3cd0c3;
+  --turquoise-200: #a8ece4;
+  --emerald-700: #0e6b47;
+  --emerald-600: #13865a;
+  --emerald-500: #1ba56d;
+  --emerald-200: #b9ead2;
+  --amber-700: #95580a;
+  --amber-600: #b8730f;
+  --amber-500: #e3972b;
+  --amber-300: #f5c878;
+  --amber-100: #fbecd0;
+  --coral-700: #9e3220;
+  --coral-600: #bf4630;
+  --coral-100: #f8ddd5;
+  --violet-700: #4c34b3;
+  --violet-600: #5f45d6;
+  --violet-100: #e7e2fb;
+
+  /* Semantic */
+  --surface: var(--ivory-50);
+  --surface-raised: var(--ivory-0);
+  --surface-sunken: var(--ivory-100);
+  --line: #e5dcc9;
+  --line-strong: #d2c6ad;
+  --text: var(--ink-900);
+  --text-secondary: var(--ink-700);
+  --text-muted: var(--ink-500);
+  --focus: #1a8fff;
+
+  /* Validated with the dataviz palette checks (protan ΔE 10.8 on navy; series passes on ivory) */
+  --free: #129a63;
+  --taken: #e5a33a;
+  --series: #009488;
+
+  --ok: var(--emerald-600);
+  --ok-soft: #e1f4ea;
+  --warn: var(--amber-600);
+  --warn-soft: var(--amber-100);
+  --bad: var(--coral-600);
+  --bad-soft: var(--coral-100);
+  --live: var(--teal-600);
+  --sim: var(--violet-600);
+  --sim-soft: var(--violet-100);
+
+  --font-sans: 'Manrope Variable', 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --shadow-soft: 0 1px 2px rgb(15 27 45 / 0.05), 0 8px 24px -12px rgb(15 27 45 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(5 15 34 / 0.12), 0 24px 48px -24px rgb(5 15 34 / 0.45);
+  --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+}

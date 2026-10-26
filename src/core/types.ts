@@ -127,6 +127,8 @@ export interface DiagnosticTotals {
   overflows: number;
   readErrors: number;
   staleEpisodes: number;
+  /** Long pauses followed by a burst of lines: the browser was busy, not the firmware. */
+  hostStalls: number;
   flickers: number;
   unexplainedChanges: number;
   discrepancies: number;
@@ -158,7 +160,8 @@ export interface EngineState {
   flickers: number[];
   unstable: boolean;
   stale: boolean;
-  discrepancy: { at: number; message: string } | null;
+  /** Active counter problem. 'range' clears itself when the counter returns to 0..capacity. */
+  discrepancy: { at: number; message: string; kind: 'range' | 'event' } | null;
   page: { hidden: boolean; changedAt: number };
   events: ParkingEvent[];
   samples: OccupancySample[];

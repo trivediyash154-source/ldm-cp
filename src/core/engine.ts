@@ -74,6 +74,7 @@ export function createEngineState(options: EngineOptions): EngineState {
       overflows: 0,
       readErrors: 0,
       staleEpisodes: 0,
+      hostStalls: 0,
       flickers: 0,
       unexplainedChanges: 0,
       discrepancies: 0,
@@ -153,8 +154,8 @@ function addRaw(s: EngineState, at: number, kind: RawLineKind, text: string, not
   s.rawLog = log.length > HISTORY_LIMITS.rawLog ? log.slice(-HISTORY_LIMITS.rawLog) : log;
 }
 
-function setDiscrepancy(s: EngineState, at: number, message: string): void {
-  s.discrepancy = { at, message };
+function setDiscrepancy(s: EngineState, at: number, message: string, kind: 'range' | 'event' = 'event'): void {
+  s.discrepancy = { at, message, kind };
   s.totals = { ...s.totals, discrepancies: s.totals.discrepancies + 1 };
 }
 
@@ -459,7 +460,15 @@ function onFrame(s: EngineState, frame: TelemetryFrame, at: number): void {
 
   // v1: the firmware prints nothing while a gate sequence runs (~1.77 s), so a
   // pause of that length right before a counter step is evidence that the
-  // step came from a gate sequence rather than from noise.
+  // step came from a gate sequence rather than from noise. A gate sequence
+  // ends with a single line; several lines arriving together after a pause
+  // mean the browser was busy and delivered buffered data late, which says
+  // nothing about the firmware, so that pause is discarded.
+  if (s.gateWindow && !s.gateWindow.resolved && at === prevFrameAt && at === s.gateWindow.endedAt) {
+    s.gateWindow = null;
+    s.totals = { ...s.totals, hostStalls: s.totals.hostStalls + 1 };
+    if (s.candidate) s.candidate = { ...s.candidate, gateLinked: false };
+  }
   if (s.protocol !== 'v2' && prevFrameAt !== null && hasCurrentReading(s)) {
     const pause = at - prevFrameAt;
     const pageWasVisible = !s.page.hidden && s.page.changedAt <= prevFrameAt;
@@ -579,6 +588,7 @@ function acceptChange(s: EngineState, from: Reading, to: Reading, gateLinked: bo
 
   if (enteringBadRange) outOfRange(s, to);
   else if (!inRange(s, from.raw)) {
+    if (s.discrepancy?.kind === 'range') s.discrepancy = null;
     addEvent(s, to.at, {
       kind: 'counter',
       basis: 'observed',
@@ -593,7 +603,7 @@ function acceptChange(s: EngineState, from: Reading, to: Reading, gateLinked: bo
 function outOfRange(s: EngineState, reading: Reading): void {
   s.totals = { ...s.totals, outOfRange: s.totals.outOfRange + 1 };
   const message = `Counter reads ${reading.raw} (Q2 Q1 Q0 = ${describeBits(reading.bits)}), above the capacity of ${s.capacity}. The firmware will refuse every entry while count ≥ ${s.capacity}.`;
-  setDiscrepancy(s, reading.at, message);
+  setDiscrepancy(s, reading.at, message, 'range');
   addEvent(s, reading.at, {
     kind: 'counter',
     basis: 'observed',
