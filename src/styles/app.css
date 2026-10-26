@@ -1890,6 +1890,122 @@ main {
   color: var(--navy-300);
 }
 
+/* ---------- Setup ---------- */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.step {
+  display: grid;
+  gap: 16px;
+  padding: 24px 26px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+}
+.step-head {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.step-head h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.step-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-weight: 700;
+  color: var(--teal-700);
+  background: #e3f4ef;
+  border: 1px solid rgb(11 109 105 / 0.25);
+}
+.step.is-done .step-num {
+  color: #fff;
+  background: var(--emerald-600);
+  border-color: var(--emerald-600);
+}
+.step-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.checklist {
+  margin: 0;
+  padding-left: 1.2em;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  display: grid;
+  gap: 4px;
+}
+.note {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+.note.tone-bad {
+  background: var(--bad-soft);
+  color: var(--coral-700);
+}
+.install {
+  display: grid;
+  gap: 10px;
+}
+.install-bar {
+  height: 10px;
+  border-radius: 6px;
+  background: var(--ivory-200);
+  overflow: hidden;
+}
+.install-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--teal-600), var(--turquoise-400));
+  transition: width 200ms var(--ease);
+}
+.install-bar span.is-failed {
+  background: var(--coral-600);
+}
+.install-status {
+  font-weight: 650;
+  font-size: 0.92rem;
+}
+.install-log {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--navy-950);
+  color: var(--ivory-100);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  max-height: 220px;
+  overflow: auto;
+}
+.fallback summary {
+  cursor: pointer;
+  font-weight: 650;
+  color: var(--teal-700);
+}
+.fallback p {
+  margin-top: 8px;
+  color: var(--text-secondary);
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1240px) {
   .band {

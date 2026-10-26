@@ -67,7 +67,16 @@ async function main() {
     if (m.type() === 'error') errors.push(m.text());
   });
 
-  await page.goto(url);
+  // One-click firmware install through the bootloader (fake STK500 responder).
+  await page.goto(`${url}#/setup`);
+  await page.waitForSelector('.view-setup');
+  await page.click('.view-setup .step:first-child .btn-primary');
+  await page.waitForFunction(() => document.querySelector('.install-status')?.textContent?.includes('installed and verified'), null, { timeout: 20000 });
+  const boot = await page.evaluate(() => window.__arduino.bootloader());
+  check('installs firmware through the bootloader', boot.flashedV2 && boot.written > 4000, `${boot.written} bytes written, ${boot.resets} DTR/RTS changes`);
+  await page.screenshot({ path: join(out, '00-setup-installed.png'), fullPage: true });
+
+  await page.goto(`${url}#/overview`);
   await page.waitForSelector('.hero');
   check('starts disconnected with onboarding', await page.isVisible('.onboarding'));
   check('USB pill shows Disconnected', (await page.textContent('.pills')).includes('Disconnected'));

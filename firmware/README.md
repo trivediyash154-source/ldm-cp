@@ -54,14 +54,19 @@ Nothing else changed: same pins, same `delay()`s, same `count < 5` /
 
 ## Uploading
 
-Open the sketch folder in the Arduino IDE, choose **Tools → Board → Arduino
-Uno** and the right **Port**, and upload. Close the Serial Monitor before
-connecting the web app — only one program can use the port.
+Easiest: open the web app's **Setup** page and press **Install firmware**. It
+resets the Uno into its bootloader over USB, uploads `build/parking_counter_v2.hex`
+with the same STK500 commands avrdude uses, and reads every page back to
+verify it.
+
+Or with the Arduino IDE: open the sketch folder, choose **Tools → Board →
+Arduino Uno** and the right **Port**, and upload. Close the Serial Monitor
+before connecting the web app — only one program can use the port.
 
 ## Compile check
 
 `npm run firmware:build` (Linux, needs `gcc-avr avr-libc arduino-core-avr`)
 compiles both sketches with the Arduino AVR core 1.8.6 and the Servo library
-1.2.2, and writes the `.hex` files used by the firmware-in-the-loop tests in
-`test/firmware/`. Those tests run the compiled sketches in an emulated
+1.2.2, and writes the `.hex` files to `build/`. The installer uses the v2 file;
+the firmware-in-the-loop tests in `test/firmware/` run both in an emulated
 ATmega328P (avr8js) wired to a behavioural model of the 74LS74 counter.

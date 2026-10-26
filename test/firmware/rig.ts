@@ -6,8 +6,8 @@ import { LineFramer } from '../../src/protocol/framer';
 import { Counter74LS74, EmulatedUno, loadHex, type CounterOptions } from './emulatedUno';
 
 export const HEX = {
-  v1: 'test/fixtures/firmware/parking_counter_v1.hex',
-  v2: 'test/fixtures/firmware/parking_counter_v2.hex',
+  v1: 'firmware/build/parking_counter_v1.hex',
+  v2: 'firmware/build/parking_counter_v2.hex',
 } as const;
 
 export const firmwareBuilt = existsSync(HEX.v1) && existsSync(HEX.v2);

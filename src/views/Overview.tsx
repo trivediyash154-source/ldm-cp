@@ -114,19 +114,26 @@ export function Overview() {
           <h2 id="start-title">Connect the parking prototype</h2>
           <ol>
             <li>
-              <strong>Plug the Uno in by USB</strong> and make sure <code>parking_counter_v1</code> or <code>_v2</code> is uploaded.
+              <strong>Plug the Uno in by USB</strong> and close the Arduino IDE. Only one program can use the port at a time.
             </li>
             <li>
-              <strong>Close the Arduino IDE Serial Monitor.</strong> Only one program can use the port at a time.
+              <strong>First time?</strong> Install the parking firmware from the <a href="#/setup">Setup</a> page — one
+              click, no Arduino IDE needed.
             </li>
             <li>
-              <strong>Press Connect Arduino</strong> and choose the board's port. Opening the port restarts the Uno, so the first reading takes about 2 s.
+              <strong>Press Connect Arduino</strong> and choose the board's port. The Uno restarts, so the first reading
+              takes about 2 s.
             </li>
           </ol>
           {link.status !== 'unsupported' && (
-            <button className="btn btn-primary" onClick={() => void services.live.session.connect(true)}>
-              <Icon name="usb" /> Connect Arduino
-            </button>
+            <div className="step-actions">
+              <button className="btn btn-primary" onClick={() => void services.live.session.connect(true)}>
+                <Icon name="usb" /> Connect Arduino
+              </button>
+              <a className="btn btn-quiet" href="#/setup">
+                <Icon name="download" /> Install firmware first
+              </a>
+            </div>
           )}
         </section>
       )}

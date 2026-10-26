@@ -10,6 +10,7 @@ import { FacilityView } from './views/FacilityView';
 import { HardwareLab } from './views/HardwareLab';
 import { Insights } from './views/Insights';
 import { Overview } from './views/Overview';
+import { Setup } from './views/Setup';
 import { Timeline } from './views/Timeline';
 
 const ROUTES: Record<string, { label: string; title: string; subtitle: string; icon: IconName; view: () => ReactNode }> = {
@@ -19,6 +20,7 @@ const ROUTES: Record<string, { label: string; title: string; subtitle: string; i
   timeline: { label: 'Timeline', title: 'Timeline', subtitle: 'Entries, exits and system events as they were identified', icon: 'timeline', view: () => <Timeline /> },
   insights: { label: 'Insights', title: 'Insights', subtitle: 'Analytics from recorded readings and events only', icon: 'insights', view: () => <Insights /> },
   diagnostics: { label: 'Diagnostics', title: 'Diagnostics', subtitle: 'Connection, data quality and the raw serial stream', icon: 'diagnostics', view: () => <Diagnostics /> },
+  setup: { label: 'Setup', title: 'Setup', subtitle: 'Install the firmware and connect the board', icon: 'plug', view: () => <Setup /> },
 };
 
 function useRoute(): string {

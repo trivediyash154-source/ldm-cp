@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Compiles firmware/parking_counter_v1 and _v2 for the Arduino Uno (ATmega328P,
 # 16 MHz) the same way the Arduino IDE does, and writes Intel HEX files to
-# test/fixtures/firmware/. The firmware-in-the-loop tests run those files in an
-# emulated ATmega328P.
+# firmware/build/. The web app bundles the v2 file for its installer, and the
+# firmware-in-the-loop tests run both in an emulated ATmega328P.
 #
 # Requirements (Debian/Ubuntu):
 #   sudo apt-get install gcc-avr avr-libc arduino-core-avr
@@ -17,7 +17,7 @@ ARDUINO_AVR="${ARDUINO_AVR:-/usr/share/arduino/hardware/arduino/avr}"
 SERVO_TAG="1.2.2"
 CACHE="$ROOT/tools/firmware/.cache"
 SERVO_DIR="$CACHE/Servo-$SERVO_TAG"
-OUT_DIR="$ROOT/test/fixtures/firmware"
+OUT_DIR="$ROOT/firmware/build"
 BUILD="$CACHE/build"
 
 command -v avr-gcc >/dev/null || { echo "avr-gcc not found (apt-get install gcc-avr avr-libc)"; exit 1; }

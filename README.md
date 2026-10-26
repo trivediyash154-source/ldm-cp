@@ -11,19 +11,25 @@ on its own, never sends commands to the board, and labels everything it
 infers. Simulation mode exists for demos, is clearly marked, and is kept
 completely separate from live data.
 
-## Quick start
+## Use it
+
+**Live app: https://ldm-smart-parking.vercel.app** (Chrome, Edge or Opera on a
+computer — Web Serial is not available in Firefox, Safari or on phones).
+
+1. Plug the Uno into the computer by USB and close the Arduino IDE.
+2. Open **Setup → Install firmware**. The page uploads
+   `parking_counter_v2` through the Uno's bootloader and verifies it — no
+   Arduino IDE needed. (Keeping `parking_counter_v1` also works; see
+   [firmware/README.md](firmware/README.md).)
+3. Press **Connect Arduino** and pick the board's port. The Uno restarts when
+   the port opens; the first reading appears after about 2 s.
+
+To run it locally instead:
 
 ```bash
 npm install
 npm run dev            # http://localhost:5173
 ```
-
-1. Upload `firmware/parking_counter_v2` (recommended) or keep
-   `parking_counter_v1` — the app works with both. See [firmware/README.md](firmware/README.md).
-2. Plug the Uno in by USB and **close the Arduino IDE Serial Monitor**.
-3. Open the app in **Chrome, Edge or Opera on a desktop**, press
-   **Connect Arduino** and pick the board's port. The Uno restarts when the
-   port opens; the first reading appears after about 2 s.
 
 ## How the app talks to the Arduino
 
@@ -108,17 +114,25 @@ npm run build && npm run test:e2e   # browser check, needs Playwright + Chromium
   to a behavioural 74LS74 model. Their real serial output is fed through the
   app's parser and engine. This verifies protocol compatibility and timing
   against the actual firmware, and reproduces the wiring faults above.
+- **Firmware installer** (`test/firmware/installer.test.ts`): the browser's
+  STK500 uploader against the real Uno bootloader (Optiboot, from the Arduino
+  AVR core) running in the emulator, with flash writes emulated. It replaces
+  v1 with v2, verifies every page, and the flashed image then boots and prints
+  the v2 startup line.
 - **Browser check** (`test/e2e`): the production build in headless Chromium
-  with a scripted fake serial port — connect, entry, exit discrepancy, bad
-  lines, count 7, unplug, simulation isolation, and phone-width layout.
-  Screenshots go to `test/e2e/output/`.
+  with a scripted fake serial port — firmware install, connect, entry, exit
+  discrepancy, bad lines, count 7, unplug, simulation isolation, and
+  phone-width layout. Screenshots go to `test/e2e/output/`.
 
 None of these tests use the physical board. **The app has not yet been tested
 against the real hardware.**
 
 ## Deployment
 
-The app is a static site:
+Hosted on Vercel as project `ldm-smart-parking`, connected to this GitHub
+repository: every push to `main` redeploys https://ldm-smart-parking.vercel.app.
+
+The app is a static site, so it can also be hosted anywhere else:
 
 ```bash
 npm run build          # output in dist/
@@ -162,10 +176,12 @@ firmware/                 Arduino sketches (v1 original, v2 recommended)
 src/protocol/             line framing and message parsing
 src/core/                 engine reducer, selectors, bay model, analytics, storage
 src/serial/               Web Serial transport and session
+src/firmware/             Intel HEX parser and STK500 uploader (Setup page)
 src/simulation/           simulated firmware and session (separate store)
 src/facility/             3D scene (React Three Fiber) and 2D fallback
 src/views/, src/ui/       pages and shared components
 test/unit, test/firmware, test/e2e
-tools/firmware/build.sh   compiles the sketches for the emulator tests
+firmware/build/           compiled .hex files (installer + emulator tests)
+tools/firmware/build.sh   compiles the sketches into firmware/build/
 docs/hardware-notes.md    wiring review and the optional up/down counter
 ```
