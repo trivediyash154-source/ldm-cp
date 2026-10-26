@@ -25,10 +25,13 @@ export const PINS = {
 
 export const TIMING = {
   /**
-   * Normal telemetry period is ~136 ms (delay(100) + ~36 ms to print a line at
-   * 9600 baud). A gate sequence blocks loop() for ~1.77 s, and an entry plus
-   * an exit handled in the same pass block it for ~3.5 s. Anything longer
-   * than this means the stream has actually stopped.
+   * Normal telemetry period is ~100 ms: delay(100) per loop pass, while the
+   * 33-byte line (~35 ms at 9600 baud) drains from the Arduino's transmit
+   * buffer in the background. A gate sequence blocks loop() for ~1.77 s, and
+   * an entry plus an exit handled in the same pass block it for ~3.5 s.
+   * Anything longer than this means the stream has actually stopped.
+   * (Timings measured by running the compiled sketch in an emulated
+   * ATmega328P; see test/firmware.)
    */
   staleAfterMs: 4000,
   /** A pause at least this long between telemetry lines matches a gate sequence (v1 inference). */

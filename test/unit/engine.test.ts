@@ -72,7 +72,7 @@ describe('firmware v1 (telemetry only)', () => {
 
   it('flags a gate sequence that did not change the counter', () => {
     const b = new Bench().connect().frames(3, 5);
-    b.line(telemetry(3), GATE_PAUSE).frames(3, 15);
+    b.line(telemetry(3), GATE_PAUSE).frames(3, 20);
     const warning = b.events.find((e) => e.title === 'Gate sequence without a count change');
     expect(warning).toMatchObject({ basis: 'inferred', before: 3, after: 3 });
     expect(b.vehicleEvents()).toHaveLength(0);

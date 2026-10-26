@@ -9,8 +9,8 @@ export function telemetry(raw: number): string {
   return `{"q2":${q2},"q1":${q1},"q0":${q0},"count":${raw}}`;
 }
 
-export const PERIOD = 136; // ms between telemetry lines at 9600 baud
-export const GATE_PAUSE = 1765 + 136; // gate sequence + one normal period
+export const PERIOD = 100; // ms between telemetry lines (measured on the emulated Uno)
+export const GATE_PAUSE = 1765 + 100; // gate sequence + one normal period
 
 /** Drives the reducer with a clock, like the serial session does. */
 export class Bench {
